@@ -1,30 +1,46 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
+
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
         String[] wordsArray;
+        byte choiceNum;
 
-        while (true){
+        while (true) {
 
             System.out.println("Введіть масив слів для обчислення через пробіл, вкінці тисніть enter:");
 
             String line = sc.nextLine();
             wordsArray = line.trim().split("\\s+");
 
-            if (wordsArray[0] == ""){
+            if (wordsArray[0].isEmpty()) {
                 System.out.println("Введи хоч якісь слова cuh!\n");
                 continue;
             }
-            sc.close();
-
-            int avgNumOfChars = calculateAverageNumOfLetters(wordsArray);
-            calculateAndPrintResult(wordsArray, avgNumOfChars);
-
-            System.exit(0);
+            break;
+        }
+        while (true) {
+            System.out.println("Який масив слів повернути? (Введіть 1 чи 2)\n1. Більше за середню кількість літер\n2. Менше за середню кількість літер\n\\|/");
+            choiceNum = sc.nextByte();
+            if(choiceNum != 1 && choiceNum != 2){
+                System.out.println("\nПотрібно ввести 1 чи 2 :є\n");
+                continue;
+            }
+            break;
         }
 
+        sc.close();
+
+        int avgNumOfChars = calculateAverageNumOfLetters(wordsArray);
+        System.out.println("\u001B[33m" + "\nСередня довжина слова в масиві: " + avgNumOfChars + "\u001B[0m");
+
+        ArrayList<String> resultArray = calculateResult(wordsArray, avgNumOfChars, choiceNum);
+        printResult(resultArray, choiceNum);
+
+        System.exit(0);
     }
 
     static int calculateAverageNumOfLetters(String[] strings) {
@@ -37,19 +53,37 @@ public class Main {
         return numberOfChars / numberOfWords;
     }
 
-    static void calculateAndPrintResult(String[] words, int avgNumOfChars){
+    static ArrayList<String> calculateResult(String[] words, int avgNumOfChars, byte choiceNum){
 
-        System.out.println("\u001B[33m" + "\nСередня довжина слова в масиві: " + avgNumOfChars + "\u001B[0m");
-        System.out.println("\u001B[32m" + "\nСлова, довше за середню довжину:");
+        ArrayList<String> MoreThanAvgWords = new ArrayList<>();
+        ArrayList<String> LessThanAvgWords = new ArrayList<>();
+
         for (String word:words){
             if(word.length() > avgNumOfChars){
+                MoreThanAvgWords.add(word);
+            }
+            else if(word.length() < avgNumOfChars){
+                LessThanAvgWords.add(word);
+            }
+        }
+        if (choiceNum == 1){
+            return MoreThanAvgWords;
+        }
+        else {
+            return LessThanAvgWords;
+        }
+    }
+
+    static void printResult(ArrayList<String> resultArray, byte choiceNum) {
+        if(choiceNum == 1){
+            System.out.println("\u001B[32m" + "\nСлова, довше за середню довжину:");
+            for (String word:resultArray){
                 System.out.println(word);
             }
         }
-
-        System.out.println("\u001B[34m" + "\nСлова, коротше за середню довжину:");
-        for (String word:words){
-            if(word.length() < avgNumOfChars){
+        else{
+            System.out.println("\u001B[34m" + "\nСлова, коротше за середню довжину:");
+            for (String word:resultArray){
                 System.out.println(word);
             }
         }
