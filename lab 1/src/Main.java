@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-
+        // cat elephant sky innovation tree jump synchronize book universe fly algorithm dream code imagination river strength whisper galaxy
         Scanner sc = new Scanner(System.in);
         String[] wordsArray;
         byte choiceNum;
@@ -39,7 +39,6 @@ public class Main {
 
         ArrayList<String> resultArray = calculateResult(wordsArray, avgNumOfChars, choiceNum);
         printResult(resultArray, choiceNum);
-
         System.exit(0);
     }
 
